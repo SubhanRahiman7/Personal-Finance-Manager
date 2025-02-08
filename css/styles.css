@@ -198,18 +198,50 @@ header h1 {
 /* Budget Progress Bar */
 .budget-progress {
     height: 25px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.2);
     border-radius: 12.5px;
     overflow: hidden;
     margin: 20px 0;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    backdrop-filter: none;
 }
 
 #budget-bar {
     height: 100%;
-    background: linear-gradient(135deg, var(--success-gradient-start), var(--success-gradient-end));
-    transition: width 0.5s ease, background 0.3s ease;
+    width: 0;
+    background: linear-gradient(135deg, #ffb515, #ff4100) !important;
     border-radius: 12.5px;
+    transition: width 0.5s ease, background 0.3s ease;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+}
+
+#budget-bar.warning {
+    background: linear-gradient(135deg, #ffcc56, #ff4100) !important;
+}
+
+#budget-bar.danger {
+    background: linear-gradient(135deg, #ff4100, #f30000) !important;
+}
+
+#budget-percentage {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.budget-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-weight: 600;
 }
 
 /* Expenses Table */
@@ -670,7 +702,9 @@ input:focus, select:focus {
 
 /* Number Input Specific Styles */
 input[type="number"] {
+    -webkit-appearance: textfield;
     -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 input[type="number"]::-webkit-outer-spin-button,
@@ -922,4 +956,17 @@ select option {
     #convert-btn {
         width: 100%;
     }
+}
+
+/* Update amount class color */
+.amount {
+    color: #fff !important;  /* White color for better visibility */
+    font-weight: 600;  /* Make it bold */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);  /* Add subtle shadow for better readability */
+}
+
+/* If it's inside the result display, make it even more prominent */
+#result-display .amount {
+    color: #ffb515 !important;  /* Using the theme's orange color */
+    font-weight: 700;  /* Extra bold */
 }
