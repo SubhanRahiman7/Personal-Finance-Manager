@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Manager</title>
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Theme Switcher -->
+    <link rel="stylesheet" href="css/light-theme.css" id="theme-style">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Auth Container -->
+    <div id="auth-container" class="container">
+        <div class="auth-form">
+            <h2>Welcome to Personal Finance Manager</h2>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+                <p>Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
+            </form>
+            <form id="signup-form" style="display: none;">
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Password" required>
+                <input type="password" id="signup-confirm-password" placeholder="Confirm Password" required>
+                <button type="submit">Sign Up</button>
+                <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App Container (Initially Hidden) -->
+    <div id="app-container" class="container" style="display: none;">
+        <header>
+            <h1>Personal Finance Manager</h1>
+            <div class="header-controls">
+                <button id="logout-btn">Logout</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Budget Section -->
+            <section id="budget-section">
+                <h2>Budget Overview</h2>
+                <div class="budget-container">
+                    <div class="budget-header">
+                        <h3>Monthly Budget</h3>
+                        <input type="number" id="budget-input" placeholder="Enter budget amount">
+                        <button id="set-budget-btn">Set Budget</button>
+                    </div>
+                    
+                    <div class="budget-progress">
+                        <div id="budget-bar" class="budget-progress-bar"></div>
+                        <span id="budget-percentage">0%</span>
+                    </div>
+                    
+                    <div id="budget-warning" class="budget-warning"></div>
+                    
+                    <div class="budget-info">
+                        <span id="budget-spent">Spent: ₹0</span>
+                        <span id="budget-remaining">Remaining: ₹0</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Expense Tracking Section -->
+            <section id="expense-section">
+                <h2>Expense Tracker</h2>
+                <form id="expense-form">
+                    <input type="number" id="expense-amount" placeholder="Amount" required>
+                    <select id="expense-category" required>
+                        <option value="">Select Category</option>
+                        <option value="food">Food</option>
+                        <option value="transport">Transport</option>
+                        <option value="utilities">Utilities</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <input type="date" id="expense-date" required>
+                    <button type="submit">Add Expense</button>
+                </form>
+                <div id="expenses-table"></div>
+            </section>
+
+            <!-- Currency Converter Section -->
+            <section id="currency-section">
+                <h2>Currency Converter</h2>
+                <div class="converter-container">
+                    <div class="converter-form">
+                        <div class="amount-group">
+                            <input type="number" id="amount-input" placeholder="Enter amount" min="0" step="0.01">
+                        </div>
+                        <div class="currency-group">
+                            <div class="currency-select">
+                                <label>From</label>
+                                <select id="from-currency">
+                                    <option value="INR">Indian Rupee (INR)</option>
+                                    <option value="USD">US Dollar (USD)</option>
+                                    <option value="EUR">Euro (EUR)</option>
+                                    <option value="GBP">British Pound (GBP)</option>
+                                    <option value="JPY">Japanese Yen (JPY)</option>
+                                    <option value="AUD">Australian Dollar (AUD)</option>
+                                    <option value="CAD">Canadian Dollar (CAD)</option>
+                                    <option value="CHF">Swiss Franc (CHF)</option>
+                                    <option value="CNY">Chinese Yuan (CNY)</option>
+                                    <option value="SGD">Singapore Dollar (SGD)</option>
+                                </select>
+                            </div>
+                            <button id="swap-currency" class="swap-btn">
+                                ⇄
+                            </button>
+                            <div class="currency-select">
+                                <label>To</label>
+                                <select id="to-currency">
+                                    <option value="USD">US Dollar (USD)</option>
+                                    <option value="INR">Indian Rupee (INR)</option>
+                                    <option value="EUR">Euro (EUR)</option>
+                                    <option value="GBP">British Pound (GBP)</option>
+                                    <option value="JPY">Japanese Yen (JPY)</option>
+                                    <option value="AUD">Australian Dollar (AUD)</option>
+                                    <option value="CAD">Canadian Dollar (CAD)</option>
+                                    <option value="CHF">Swiss Franc (CHF)</option>
+                                    <option value="CNY">Chinese Yuan (CNY)</option>
+                                    <option value="SGD">Singapore Dollar (SGD)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button id="convert-btn">Convert</button>
+                    </div>
+                    <div class="conversion-result">
+                        <div id="result-display">
+                            <span class="amount">0.00</span>
+                            <span class="currency">USD</span>
+                        </div>
+                        <div id="rate-info">1 USD = 0.00 INR</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stock Market Section -->
+            <section id="stock-section">
+                <h2>Stock Monitor</h2>
+                <div class="stock-search">
+                    <input type="text" id="stock-symbol" placeholder="Enter Stock Symbol">
+                    <button id="search-stock-btn">Search</button>
+                </div>
+                <div id="stock-data"></div>
+                <canvas id="stock-chart"></canvas>
+            </section>
+
+            <!-- Data Visualization Section -->
+            <section id="visualization-section">
+                <h2>Expense Analysis</h2>
+                <canvas id="expense-chart"></canvas>
+            </section>
+
+            <!-- Export Section -->
+            <section id="export-section">
+                <h2>Export Data</h2>
+                <button id="export-csv">Export to CSV</button>
+            </section>
+        </main>
+    </div>
+
+    <!-- JavaScript Modules -->
+    <script src="js/auth.js" type="module"></script>
+    <script src="js/budget.js" type="module"></script>
+    <script src="js/expenses.js" type="module"></script>
+    <script src="js/stocks.js" type="module"></script>
+    <script src="js/visualization.js" type="module"></script>
+    <script src="js/export.js" type="module"></script>
+    <script src="js/theme.js" type="module"></script>
+    <script src="cursor.js"></script>
+    <script src="js/currency.js" type="module"></script>
+</body>
+</html>
