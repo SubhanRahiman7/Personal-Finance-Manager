@@ -351,7 +351,6 @@ canvas {
     background: linear-gradient(135deg, #ffcc56, #ff4100);
     -webkit-background-clip: text;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
 .stock-date {
